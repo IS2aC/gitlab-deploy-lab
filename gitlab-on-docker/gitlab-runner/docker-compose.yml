@@ -1,0 +1,18 @@
+services:
+  gitlab-runner:
+    container_name: gitlab-runner
+    image: gitlab/gitlab-runner:latest                                                                             
+    restart: always
+    networks:
+      - applications-networks
+    volumes:
+      - ./configs/config.toml:/etc/gitlab-runner/config.toml
+      - ./data/gitlab-runner:/etc/gitlab-runner
+      - ./var/run/docker.sock:/var/run/docker.sock
+    shm_size: '256m'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+networks:
+  applications-networks:
+    name: applications-networks
+    external: true

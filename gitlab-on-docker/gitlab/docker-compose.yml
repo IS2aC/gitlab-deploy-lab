@@ -1,0 +1,23 @@
+services:
+  gitlab-ce:
+    container_name: gitlab-ce
+    image: gitlab/gitlab-ce:18.6.4-ce.0
+    restart: always
+    ports:
+      - '9080:80'
+      - '9043:443'
+      - '9022:22'
+    volumes:
+      - './gitlab-data/config:/etc/gitlab'
+      - './gitlab-data/logs:/var/log/gitlab'
+      - './gitlab-data/data:/var/opt/gitlab'
+    networks:
+      - applications-networks
+    shm_size: '256m'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+networks:
+  applications-networks:
+    name: applications-networks
+    external :  true
+    

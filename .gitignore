@@ -1,0 +1,4 @@
+gitlab-on-docker/gitlab/gitlab-data
+gitlab-on-docker/gitlab-runner/configs/config.toml
+gitlab-on-docker/gitlab-runner/data
+gitlab-on-docker/gitlab-runner/var
