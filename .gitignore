@@ -2,3 +2,7 @@ gitlab-on-docker/gitlab/gitlab-data
 gitlab-on-docker/gitlab-runner/configs/config.toml
 gitlab-on-docker/gitlab-runner/data
 gitlab-on-docker/gitlab-runner/var
+.venv
+gitlab-on-docker/project-space/gitlab-runner/__gitlab-ci.yml__
+gitlab-on-docker/project-space/gitlab-runner/__pre-commit-config.yaml__
+gitlab-on-docker/project-space
