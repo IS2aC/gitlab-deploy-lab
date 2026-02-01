@@ -1,0 +1,62 @@
+# ============================================
+# GitLab Runner values.yaml - Kubernetes
+# ============================================
+
+# ✅ URL du GitLab (API + registration)
+gitlabUrl: "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
+
+# ✅ Token runner
+runnerToken: "glrt-HOF74iyNLrVtbwAz2xaVIG86MQp0OjEKdToxCw.01.120vp76ep"
+
+runners:
+  config: |
+    [[runners]]
+      name = "runner-k8s-local"
+      url = "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
+
+      # ✅ FIX IMPORTANT : forcer l'URL de clone interne
+      clone_url = "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
+
+      request_concurrency = 3
+
+      executor = "kubernetes"
+
+      [runners.kubernetes]
+        namespace = "{{.Release.Namespace}}"
+        image = "ubuntu:22.04"
+        privileged = true
+
+        # Si tu veux du docker-in-docker plus tard,
+        # on ajoutera le service dind + DOCKER_HOST.
+        [[runners.kubernetes.volumes.empty_dir]]
+          name = "docker-certs"
+          mount_path = "/certs/client"
+          medium = "Memory"
+
+      [runners.cache]
+        Type = "local"
+        Path = "/tmp/cache"
+        Shared = true
+
+  replicas: 1
+  tags: "docker,kubernetes,local"
+  runUntagged: true
+  locked: false
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+metrics:
+  enabled: false
+
+rbac:
+  create: true
+  clusterWideAccess: true
+
+serviceAccount:
+  create: true

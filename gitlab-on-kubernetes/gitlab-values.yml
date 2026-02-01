@@ -1,0 +1,114 @@
+# ============================================
+# GitLab values.yaml - Docker Desktop / WSL
+# ============================================
+
+global:
+  edition: ce
+
+  hosts:
+    domain: gitlab.local
+    https: false
+
+    gitlab:
+      name: gitlab.local
+
+    registry:
+      name: registry.gitlab.local
+
+  # ✅ Important : GitLab doit connaitre son URL "publique"
+  # sinon il génère des clone URL en port 80 par défaut
+  appConfig:
+    gitlab:
+      host: gitlab.local
+      port: 80
+      https: false
+
+    lfs:
+      enabled: true
+      bucket: git-lfs
+
+    artifacts:
+      enabled: true
+      bucket: gitlab-artifacts
+
+    uploads:
+      enabled: true
+      bucket: gitlab-uploads
+
+    packages:
+      enabled: true
+      bucket: gitlab-packages
+
+    backups:
+      bucket: gitlab-backups
+
+  ingress:
+    enabled: true
+    class: nginx
+    configureCertmanager: false
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+      nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+
+# PostgreSQL
+postgresql:
+  install: true
+  auth:
+    password: "gitlabpassword"
+    postgresPassword: "postgrespassword"
+
+# Redis
+redis:
+  install: true
+
+# Container Registry
+registry:
+  enabled: true
+  ingress:
+    enabled: true
+
+# Runner installé séparément
+gitlab-runner:
+  install: false
+
+# Ingress Controller externe
+nginx-ingress:
+  enabled: false
+
+# Monitoring off
+prometheus:
+  install: false
+
+# Ressources réduites
+gitlab:
+  webservice:
+    minReplicas: 1
+    maxReplicas: 1
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1Gi
+      limits:
+        cpu: 1
+        memory: 2Gi
+
+  sidekiq:
+    minReplicas: 1
+    maxReplicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+  gitaly:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
